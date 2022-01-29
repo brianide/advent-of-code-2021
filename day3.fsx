@@ -4,30 +4,29 @@ let input =
     Array.get fsi.CommandLineArgs 1
     |> System.IO.File.ReadAllLines
 
-let powers = 
-    let length = (Array.get input 0 |> String.length) - 1
-    seq { for i in 0 .. length -> pown 2 i } |> Seq.rev
+let toDecimal b =
+    let length = (Array.head input |> String.length)
+    let powers = Seq.init length (pown 2) |> Seq.rev
+    b |> zipmap (*) powers |> Seq.sum
 
 let toDigits = function '0' -> 0 | '1' -> 1 | n -> failwithf "Invalid digit: %A" n
 
 let ones =
     List.ofSeq input
     |> List.map (fun s -> seq s |> Seq.map toDigits)
-    |> List.reduce (zipmap (fun a b -> a + b))
+    |> List.reduce (zipmap (+))
 
 let half = Array.length input / 2
 
 let gamma =
     ones
     |> Seq.map (fun a -> if a > half then 1 else 0)
-    |> zipmap (fun a b -> a * b) powers
-    |> Seq.sum
+    |> toDecimal
 
 let epsilon = 
     ones
     |> Seq.map (fun a -> if a < half then 1 else 0)
-    |> zipmap (fun a b -> a * b) powers
-    |> Seq.sum
+    |> toDecimal
 
 let consumption = gamma * epsilon
 
