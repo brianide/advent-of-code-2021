@@ -9,7 +9,7 @@ let input =
 
 // Part A
 input
-|> List.windowed2
+|> List.pairwise
 |> List.where (fun (a, b) -> a < b)
 |> List.length
 |> printfn "%A"
@@ -18,7 +18,7 @@ input
 input
 |> List.windowed 3
 |> List.map List.sum
-|> List.windowed2
+|> List.pairwise
 |> List.where (fun (a, b) -> a < b)
 |> List.length
 |> printfn "%A"
