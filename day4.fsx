@@ -19,16 +19,17 @@ let parse (drawLine :: boardLines) =
         |> List.map numsToBoard
     (draws, boards)
 
-let (draws, boards) = Array.get fsi.CommandLineArgs 1 |> System.IO.File.ReadAllLines |> List.ofArray |> parse
-let rec step drawn remaining =
-    let next = List.head remaining
-    let newDrawn = Set.add next drawn
-    let isWinner board = board.Winners |> List.exists (Set.isSuperset newDrawn)
-    let calcScore board = 
-        let unmarked = List.filter (fun n -> not <| Set.contains n newDrawn) board.Numbers |> List.sum
-        unmarked * next
-    match List.tryFind isWinner boards with
-    | Some board -> (calcScore board, board)
-    | None -> step newDrawn (List.tail remaining)
+let getWinningScores boards draws =
+    let reducer (playing, prevDraws, winners) latestDraw =
+        let draws = Set.add latestDraw prevDraws
+        let isWinner board = board.Winners |> List.exists (Set.isSuperset draws)
+        let calcScore board = 
+            let unmarked = List.filter (fun n -> not <| Set.contains n draws) board.Numbers |> List.sum
+            unmarked * latestDraw
+        let (won, lost) = List.partition isWinner playing
+        (lost, draws, winners @ (List.map (fun a -> calcScore a) won))
+    let (_, _, winners) = draws |> List.fold reducer (boards, Set.empty, [])
+    winners
 
-step Set.empty draws |> printfn "%A"
+let (draws, boards) = Array.get fsi.CommandLineArgs 1 |> System.IO.File.ReadAllLines |> List.ofArray |> parse
+printfn "%A" (getWinningScores boards draws)
