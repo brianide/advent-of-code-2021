@@ -1,0 +1,54 @@
+digit	segments
+1	2
+4	4
+7	3
+8	7
+
+    *     *     * *
+  0 1 2 3 4 5 6 7 8 9  T
+a 1 0 1 1 0 1 1 1 1 1  8
+b 1 0 0 0 1 1 1 0 1 1  6
+c 1 1 1 1 1 0 0 1 1 1  8
+d 0 0 1 1 1 1 1 0 1 1  7
+e 1 0 1 0 0 0 1 0 1 0  4
+f 1 1 0 1 1 1 1 1 1 1  9
+g 1 0 1 1 0 1 1 0 1 1  7
+
+  1 4 7 8  T
+a 0 0 1 1  8
+b 0 1 0 1  6
+c 1 1 1 1  8
+d 0 1 0 1  7
+e 0 0 0 1  4
+f 1 1 1 1  9
+g 0 0 0 1  7
+
+---
+
+  1 4 7 8  T
+a 0 0 1 1  8
+b 0 1 0 1  6
+d 0 1 0 1  7
+e 0 0 0 1  4
+g 0 0 0 1  7
+c 1 1 1 1  8
+f 1 1 1 1  9
+
+---
+
+* a has unique 1478 inclusion pattern
+* [b; e; f] appear in a unique number of digits: [6; 4; 9]
+* c is 1111 and appears in 8 digits
+* d is 0101 and appears in 7 digits
+* g is 0001 and appears in 7 digits
+
+---
+
+  4 T
+a 0 8
+b 1 6
+c 1 8
+d 1 7
+e 0 4
+f 1 9
+g 0 7
